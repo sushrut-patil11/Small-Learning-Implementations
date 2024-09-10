@@ -42,8 +42,7 @@ app.post("/signin", function(req, res) {
         const token = jwt.sign({
             username: username,
             password: password,
-            firstname,
-            lastName,
+           
             courses: []
         }, JWT_SECRET) ;
 
