@@ -7,7 +7,12 @@ app.use(express.json());
 
 const users = [];
 
-app.post("/signup", function (req, res) {
+function logger(req,res,next){
+    console.log(`${req.method} request came`);
+    next();
+}
+
+app.post("/signup",logger, function (req, res) {
     const username = req.body.username;
     const password = req.body.password;
 
@@ -24,7 +29,7 @@ app.post("/signup", function (req, res) {
     
 })
 
-app.post("/signin", function(req, res) {
+app.post("/signin",logger, function(req, res) {
     
     const username = req.body.username;
     const password = req.body.password;
@@ -58,9 +63,6 @@ app.post("/signin", function(req, res) {
     console.log(users)
 })
 
-function logger(req,res,next){
-    console.log(`${req.method} request came`);
-}
 
 function auth(req,res,next){
     const token=req.headers.token;
@@ -75,7 +77,7 @@ function auth(req,res,next){
     }
 }
 
-app.get("/me", function(req, res) {
+app.get("/me",logger, function(req, res) {
     let foundUser = null;
 
     for (let i = 0; i < users.length; i++) {
@@ -89,7 +91,7 @@ app.get("/me", function(req, res) {
     })
 })
 
-app.get("/todo",auth,function(req,res){
+app.get("/todo",logger,auth,function(req,res){
 
 })
 
