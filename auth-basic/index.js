@@ -1,7 +1,7 @@
 
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = "ramdomharkiratilovekiara"
+const JWT_SECRET = "Ganapati_Bappa_Morya"
 const app = express();
 app.use(express.json());
 
@@ -58,32 +58,49 @@ app.post("/signin", function(req, res) {
     console.log(users)
 })
 
+function logger(req,res,next){
+    console.log(`${req.method} request came`);
+}
+
+function auth(req,res,next){
+    const token=req.headers.token;
+    const decodedData=jwt.verify(token,JWT_SECRET);
+    if(decodedData.username){
+        req.username=decodedData.username;
+        next();
+    }else{
+        res.json({
+            message:"You are not logged in"
+        })
+    }
+}
+
 app.get("/me", function(req, res) {
-    const token = req.headers.token // jwt
-    const decodedInformation = jwt.verify(token, JWT_SECRET);  // {username: "harkirat@gmail.com"}
-    const unAuthDecodedinfo = jwt.decode(token,);  // {username: "harkirat@gmail.com"}
-    const username = decodedInformation.username
     let foundUser = null;
 
     for (let i = 0; i < users.length; i++) {
-        if (users[i].username == username)  {
+        if (users[i].username == req.username)  {
             foundUser = users[i]
         }
     }
+    res.json({
+        username: foundUser.username,
+        password: foundUser.password
+    })
+})
 
-    if (foundUser) {
-        res.json({
-            username: foundUser.username,
-            password: foundUser.password
-        })
-    } else {
-        res.json({
-            message: "token invalid"
-        })
-    }
-
+app.get("/todo",auth,function(req,res){
 
 })
 
+
+app.post("/todo",auth,function(req,res){
+
+})
+
+
+app.delete("/todo",auth,function(req,res){
+
+})
 
 app.listen(3000);// that the http server is listening on port 3000
