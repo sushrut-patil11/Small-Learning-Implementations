@@ -17,6 +17,69 @@
         alert("Signed Up succesfully");
     }
 
+    // async function signin(){
+    //     const username=document.getElementById("signin-username");
+    //     const password=document.getElementById("signin-password");
+
+    //     // const response=await axios.post("http://localhost:3000/signin",{
+    //     //     username:username,
+    //     //     password:password
+    //     // })
+
+    //     //  localStorage.setItem('token',response.data.token);
+        
+        
+    //     // alert("You are signed in");
+    // try {
+    //     const response = await axios.post("http://localhost:3000/signin", {
+    //         username: username,
+    //         password: password
+    //     });
+
+    //     localStorage.setItem('token', response.data.token);
+    //     alert("You are signed in");
+    // } catch (error) {
+    //     console.error("Error signing in:", error);
+    //     alert("Sign in failed");
+    // }
+    // }
+
+    async function signin() {
+    const username = document.getElementById("signin-username").value;
+    const password = document.getElementById("signin-password").value;
+
+    try {
+        const response = await axios.post("http://localhost:3000/signin", {
+            username: username,
+            password: password
+        });
+
+        console.log("Response:", response);
+
+        if (response.data && response.data.token) {
+            localStorage.setItem('token', response.data.token);
+            alert("You are signed in");
+        } else {
+            console.error("Token not found in response:", response.data);
+            alert("Sign in failed: Token not found");
+        }
+    } catch (error) {
+        console.error("Error signing in:", error);
+        alert("Sign in failed");
+    }
+}
+
+
+    async function getUserInformation(){
+       const response=await axios.get("http://localhost:3000/me",{
+            headers:{
+                token:localStorage.getItem("token")
+            }
+        })
+        document.getElementById("user-information").innerHTML= "username:"+response.data.username +"password:"+response.data.password
+    }
+
+    getUserInformation();
 </script>
 
 
@@ -26,7 +89,7 @@
 <div>
     Signup
     <input type="text" id="signup-username" name="username" placeholder="username">
-    <input type="text" id="signup-password"name="password" placeholder="password">
+    <input type="password" id="signup-password"name="password" placeholder="password">
     <button onclick="signup()">Signup</button>
 </div>
 
@@ -34,7 +97,7 @@
 
     Signin
     <input type="text" id="signin-username" name="username" placeholder="username">
-    <input type="text" id="signin-password" name="password" placeholder="password">
+    <input type="password" id="signin-password" name="password" placeholder="password">
     <button onclick="signin()">Signin</button>
 </div>
 
