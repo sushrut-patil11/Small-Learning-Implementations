@@ -67,19 +67,36 @@
         console.error("Error signing in:", error);
         alert("Sign in failed");
     }
+    getUserInformation();
 }
 
 
     async function getUserInformation(){
-       const response=await axios.get("http://localhost:3000/me",{
+
+        try{
+            const response=await axios.get("http://localhost:3000/me",{
             headers:{
                 token:localStorage.getItem("token")
             }
-        })
-        document.getElementById("user-information").innerHTML= "username:"+response.data.username +"password:"+response.data.password
-    }
+        });
 
-    getUserInformation();
+        const userinfo=response.data;
+
+        document.getElementById("user-information").innerHTML= `Username: ${userinfo.username} <br> Password: ${userinfo.password}`
+
+        }catch(error){
+
+            console.log("Error fectching user information");
+            document.getElementById("user-information").innerHTML="Failed to fetch user information";
+
+
+        }
+       
+    }
+  
+function logout(){
+    localStorage.removeItem("token");
+}
 </script>
 
 
