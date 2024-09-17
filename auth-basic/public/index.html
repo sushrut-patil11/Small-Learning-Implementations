@@ -4,19 +4,37 @@
     Auth Website
 </head>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+
+<script>
+    async function signup(){
+        const username=document.getElementById("signup-username").value;
+        const password=document.getElementById("signup-password").value;
+        
+        const response =await axios.post("http://localhost:3000/signup",{
+            username:username,
+            password:password
+        })
+        alert("Signed Up succesfully");
+    }
+
+</script>
+
+
+
 <body>
 
 <div>
     Signup
-    <input type="text" name="username" placeholder="username">
-    <input type="text" name="password" placeholder="password">
+    <input type="text" id="signup-username" name="username" placeholder="username">
+    <input type="text" id="signup-password"name="password" placeholder="password">
     <button onclick="signup()">Signup</button>
 </div>
 
 <div>
+
     Signin
-    <input type="text" name="username" placeholder="username">
-    <input type="text" name="password" placeholder="password">
+    <input type="text" id="signin-username" name="username" placeholder="username">
+    <input type="text" id="signin-password" name="password" placeholder="password">
     <button onclick="signin()">Signin</button>
 </div>
 
