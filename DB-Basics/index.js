@@ -1,11 +1,13 @@
 const express = require("express");
 const app = express();
-
+const mongoose=require("mongoose");
 const jwt=require("jsonwebtoken");
-const JWT_Secret="Ganapati_Bappa_Morya";
+const { auth, JWT_SECRET } = require("./auth");
+
+//const JWT_Secret="Ganapati_Bappa_Morya";
 
 app.use(express.json());
-
+mongoose.connect("mongodb+srv://admin:bmts5YVMS4M8YHQc@cluster0.w2afn.mongodb.net/TODO-app-DB")
 const {UserModel,TodoMpdel}=require('./db');
 
 
@@ -16,9 +18,9 @@ app.post("/signup", async function(req, res) {
     const password=req.body.password;
 
     await UserModel.create({
+        name:name,
         email:mailId,
-        password:password,
-        name:name
+        password:password
     });
 
     res.json({
@@ -41,7 +43,7 @@ app.post("/signin", async function(req, res) {
     if (response) {
         const token = jwt.sign({
             id: response._id.toString()
-        })
+        },JWT_Secret)
 
         res.json({
             token
@@ -54,12 +56,36 @@ app.post("/signin", async function(req, res) {
 });
 
 
-app.post("/todo", function(req, res) {
+app.post("/todo",auth, function(req, res) {
+    
+    const userId=req.userId;
+    const description=req.body.description;
+    
+    TodoModel.create({
+        userId,
+        description  
+    })
+
+    res.json({
+        userId:userId
+    })
+
+
 
 });
 
 
-app.get("/todos", function(req, res) {
+app.get("/todos",auth,async function(req, res) {
+
+const userId=req.userId;
+const user= await TodoModel.findOne({
+    userId:userId
+})
+
+res.json({
+    todos
+})
+
 
 });
 
