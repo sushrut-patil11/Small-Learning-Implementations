@@ -3,7 +3,7 @@ const app = express();
 const mongoose=require("mongoose");
 const jwt=require("jsonwebtoken");
 const { auth, JWT_SECRET } = require("./auth");
-
+const bcrypt=require("bcrypt");
 //const JWT_Secret="Ganapati_Bappa_Morya";
 
 app.use(express.json());
@@ -17,12 +17,20 @@ app.post("/signup", async function(req, res) {
     const name=req.body.name;
     const password=req.body.password;
 
+   try{
+    const hashedpassword=await bcrypt.hash(password,10)
+
     await UserModel.create({
         name:name,
         email:mailId,
-        password:password
+        password:hashedpassword
     });
+   }catch(e){
+        res.json({
+            message:"User Already exits"
+        })
 
+   }
     res.json({
         message:"You are Signed Up"
     })
@@ -37,10 +45,19 @@ app.post("/signin", async function(req, res) {
 
     const response=await UserModel.findOne({
         email:mailId,
-        password:password
+        
     });
 
-    if (response) {
+    if(!response){
+        res.status(403).json({
+            message:"User does not exits"
+        }) 
+    }
+
+    const passwordMatch=bcrypt.compare(password,response.password);
+
+
+    if (passwordMatch) {
         const token = jwt.sign({
             id: response._id.toString()
         },JWT_Secret)
