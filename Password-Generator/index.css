@@ -1,0 +1,20 @@
+body{
+    background-color:rgba(39, 53, 73, 1);
+}
+
+
+#Hero-white{
+    color:white;
+    font-weight: bold;
+    font-size: 40px;
+    font: karla;
+    margin-bottom:0;
+}
+
+#Hero-green{
+    margin-top:0px;
+    color:#4ADF86;
+    font-weight: bold;
+    font-size: 40px;
+    font: karla;
+}
