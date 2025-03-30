@@ -1,5 +1,6 @@
 body{
     background-color:rgba(39, 53, 73, 1);
+    margin:200px ;
 }
 
 
@@ -17,4 +18,27 @@ body{
     font-weight: bold;
     font-size: 40px;
     font: karla;
+    margin-bottom: 0px;
+}
+
+#hero-description{
+    line-height: 28px;
+    font-size: 20px;
+    color: #D5D4D8;
+    margin-top:1px;
+    font-weight: normal;
+
+}
+
+#main-function{
+    background-color: #4ADF86;
+    color: white;
+    border-radius: 6px;
+    padding-left:15px ;
+    padding-right:17px ;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
 }
